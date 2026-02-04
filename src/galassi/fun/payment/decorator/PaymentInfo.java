@@ -1,4 +1,4 @@
-package galassi.fun.payment;
+package galassi.fun.payment.decorator;
 
 public class PaymentInfo {
     private Double actualBalance;

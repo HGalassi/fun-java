@@ -1,9 +1,9 @@
 package galassi.fun;
 
-import galassi.fun.payment.MakePayment;
-import galassi.fun.payment.PaymentByCreditCard;
-import galassi.fun.payment.PaymentInfo;
-import galassi.fun.payment.PaymentOffersLoan;
+import galassi.fun.payment.decorator.MakePayment;
+import galassi.fun.payment.decorator.PaymentByCreditCard;
+import galassi.fun.payment.decorator.PaymentInfo;
+import galassi.fun.payment.decorator.PaymentOffersLoan;
 
 public class Main {
     public static void main(String[] args) {
