@@ -1,24 +1,29 @@
-package galassi.fun.payment.decorator;
+package fun.usecases.payment;
 
+import org.springframework.stereotype.Service;
+
+import java.util.Random;
+
+@Service("paymentOffersLoan")
 public class PaymentOffersLoan implements MakePayment{
 
     private  MakePayment makePayment;
-    private boolean loanAccepted;
-
     private PaymentInfo paymentInfo;
 
     private Double paymentValue = null;
     private Double actualBalance = null;
-    public PaymentOffersLoan(MakePayment makePayment, boolean loanAccepted, Double paymentValue, Double actualBalance){
+    public PaymentOffersLoan(MakePayment makePayment, Double paymentValue, Double actualBalance){
         this.makePayment = makePayment;
-        this.loanAccepted = loanAccepted;
         this.paymentValue = paymentValue;
         this.actualBalance = actualBalance;
     }
 
-    public PaymentOffersLoan(MakePayment makePayment, boolean loanAccepted, PaymentInfo paymentInfo) {
+    public PaymentOffersLoan(){
+
+    }
+
+    public PaymentOffersLoan(MakePayment makePayment, PaymentInfo paymentInfo) {
         this.makePayment = makePayment;
-        this.loanAccepted = loanAccepted;
         this.paymentInfo = paymentInfo;
     }
 
@@ -28,19 +33,26 @@ public class PaymentOffersLoan implements MakePayment{
         if (paymentInfo.getPaymentValue() > paymentInfo.getActualBalance()){
             System.out.println("Do you want to take out a loan to pay this bill? ");
 
-            if (loanAccepted){
+            if (isLoanAccepted()){
                 loanValue = paymentInfo.getPaymentValue() - paymentInfo.getActualBalance();
                 System.out.println("Loan accepted with value: "+ loanValue);
+                return this.executePaymentWithLoan(loanValue);
             }
         }
-
-        return this.executePaymentWithLoan(loanValue);
+        System.out.println("Loan not taken, balance will be negative: ");
+        return paymentInfo.getActualBalance() - paymentInfo.getPaymentValue();
 
     }
 
+    private boolean isLoanAccepted() {
+        Random random = new Random();
+        return random.nextBoolean();
+    }
+
+    //TODO: Ajustar quando empréstimo não é aceito valor não reflete negativo.
     @Override
     public Double executePaymentWithLoan(Double loanValue) {
-        if (loanAccepted){
+        if (isLoanAccepted()){
             Double result = makePayment.executePaymentWithLoan(loanValue);
             System.out.println("Payment finished with loan: "+ loanValue + " and actual balance is: " + result );
             return result;
@@ -52,7 +64,7 @@ public class PaymentOffersLoan implements MakePayment{
             return result;
         }
 
-        System.out.println("Payment finished without loan and insufficient balance. Actual balance is:" + paymentInfo.getActualBalance() );
+        System.out.println("Payment finished without loan and insufficient balance. Actual balance is:"  + (paymentInfo.getActualBalance() - paymentInfo.getPaymentValue()));
         return paymentInfo.getActualBalance();
     }
 }

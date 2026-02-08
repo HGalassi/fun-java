@@ -1,12 +1,19 @@
-package galassi.fun.payment.decorator;
+package fun.usecases.payment;
+
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@Service("savePaymentInMemory")
 public class SavePaymentInMemory implements MakePayment{
 
-    private final MakePayment makePayment;
+    private MakePayment makePayment;
     public SavePaymentInMemory(MakePayment makePayment){
         this.makePayment = makePayment;
+    }
+
+    public SavePaymentInMemory(){
+
     }
     @Override
     public Double executePayment() {

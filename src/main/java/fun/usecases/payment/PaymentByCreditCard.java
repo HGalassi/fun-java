@@ -1,16 +1,16 @@
-package galassi.fun.payment.decorator;
+package fun.usecases.payment;
 
+import org.springframework.stereotype.Service;
+
+@Service("paymentByCreditCard")
 public class PaymentByCreditCard implements MakePayment{
 
     Double paymentValue = null;
     Double actualBalance = null;
 
     PaymentInfo paymentInfo = null;
-    public PaymentByCreditCard(Double paymentValue, Double actualBalance){
-        this.paymentValue = paymentValue;
-        this.actualBalance = actualBalance;
+    public PaymentByCreditCard(){
     }
-
     public PaymentByCreditCard(PaymentInfo paymentInfo) {
         this.paymentInfo = paymentInfo;
     }
