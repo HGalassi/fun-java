@@ -1,0 +1,8 @@
+aws:
+  region: us-east-1
+  dynamodb:
+    url: http://localhost:4566/
+    access-key: local
+    secret-key: local
+server:
+  port: 8082
