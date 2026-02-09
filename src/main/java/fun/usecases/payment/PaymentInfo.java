@@ -8,15 +8,16 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortK
 import java.util.UUID;
 @DynamoDbBean()
 public class PaymentInfo {
-    private Double actualBalance;
-    private Double paymentValue;
+    private final Double actualBalance;
+    private final Double paymentValue;
 
     private boolean loanTaken;
 
-    private UUID transactionUuid;
+    private final UUID transactionUuid = UUID.randomUUID();
     public PaymentInfo(Double actualBalance, Double paymentValue){
         this.actualBalance = actualBalance;
         this.paymentValue = paymentValue;
+
     }
 
     public Double getActualBalance() {
@@ -27,9 +28,9 @@ public class PaymentInfo {
         return paymentValue;
     }
 
-    public void setActualBalance(Double newBalance){
-        this.actualBalance = newBalance;
-    }
+//    public void setActualBalance(Double newBalance){
+//        this.actualBalance = newBalance;
+//    }
 
     public boolean isLoanTaken() {
         return loanTaken;
@@ -43,8 +44,13 @@ public class PaymentInfo {
     public UUID getTransactionUuid() {
         return transactionUuid;
     }
-
-    public void setTransactionUuid(UUID transactionUuid) {
-        this.transactionUuid = transactionUuid;
+    @Override
+    public String toString() {
+        return "PaymentInfo{" +
+                "actualBalance=" + actualBalance +
+                ", paymentValue=" + paymentValue +
+                ", loanTaken=" + loanTaken +
+                ", transactionUuid=" + transactionUuid +
+                '}';
     }
 }

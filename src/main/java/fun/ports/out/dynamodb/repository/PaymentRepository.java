@@ -44,7 +44,7 @@ public class PaymentRepository {
         attrs.put("actualBalance", AttributeValue.builder().s(String.valueOf(paymentInfo.getActualBalance())).build());
         attrs.put("paymentValue", AttributeValue.builder().s(String.valueOf(paymentInfo.getPaymentValue())).build());
         attrs.put("isLoanToken", AttributeValue.builder().s(String.valueOf(paymentInfo.isLoanTaken())).build());
-        attrs.put("id", AttributeValue.builder().s(String.valueOf(1)).build());
+        attrs.put("id", AttributeValue.builder().s(String.valueOf(paymentInfo.getTransactionUuid()  )).build());
         PutItemRequest putItemRequest = PutItemRequest.builder().tableName("Payment").item(attrs).build();
         try{
             PutItemResponse response = dynamoDbClient.putItem(putItemRequest);

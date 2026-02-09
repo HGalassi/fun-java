@@ -16,11 +16,12 @@ public class SavePaymentInMemory implements MakePayment{
 
     }
     @Override
-    public Double executePayment() {
-        Double paymentValue = this.makePayment.executePayment();
+    public Double executePayment(PaymentInfo paymentInfo) {
+        System.out.println("MakePayment inside savepaymentinmemory instance of " + makePayment.getClass().getName());
+        Double finalBalance = this.makePayment.executePayment(paymentInfo);
         HashMap<UUID,Double> hashMap = new HashMap();
-        if (Objects.nonNull(paymentValue)){
-            hashMap.put(UUID.randomUUID(), paymentValue);
+        if (Objects.nonNull(finalBalance)){
+            hashMap.put(UUID.randomUUID(), finalBalance);
         }
         hashMap.forEach((k,v)-> {
             System.out.println("payment id: " + k + "\n");
@@ -28,13 +29,16 @@ public class SavePaymentInMemory implements MakePayment{
         } );
 
 
-        return paymentValue;
+        return finalBalance;
     }
 
     @Override
-    public Double executePaymentWithLoan(Double loanValue) {
-        // not implemented yet;
+    public Double executePaymentWithLoan(Double loanValue,PaymentInfo paymentInfo) {
+        makePayment.executePaymentWithLoan(loanValue,paymentInfo);
+        //TODO: Do things in memory for executed withLoan
         return null;
     }
+
+
 }
 
