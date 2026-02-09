@@ -4,12 +4,17 @@ public class PaymentByDebit implements MakePayment{
 
     private PaymentInfo paymentInfo;
     @Override
-    public Double executePayment(PaymentInfo paymentInfo) {
+    public MakePayment executePayment(PaymentInfo paymentInfo) {
         return null;
     }
 
     @Override
-    public Double executePaymentWithLoan(Double loanValue,PaymentInfo paymentInfo) {
+    public MakePayment executePaymentWithLoan(Double loanValue, PaymentInfo paymentInfo) {
+        return null;
+    }
+
+    @Override
+    public Double getBalance() {
         return null;
     }
 }

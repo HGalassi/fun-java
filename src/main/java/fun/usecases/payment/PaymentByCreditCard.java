@@ -8,17 +8,31 @@ import static fun.usecases.payment.PaymentCalculation.sum;
 @Service("paymentByCreditCard")
 public class PaymentByCreditCard implements MakePayment{
 
+    private Double balance;
+
     public PaymentByCreditCard(){
     }
     @Override
-    public Double executePayment(PaymentInfo paymentInfo) {
+    public MakePayment executePayment(PaymentInfo paymentInfo) {
         //TODO: Save new balance. subBill
-        return subBill(paymentInfo);
+        balance = subBill(paymentInfo);
+        return this;
     }
 
-    public Double executePaymentWithLoan(Double loanValue, PaymentInfo paymentInfo){
+    public MakePayment executePaymentWithLoan(Double loanValue, PaymentInfo paymentInfo){
         // TODO: increments card bill
         //TODO: setnew balance sum
-        return subBill(paymentInfo);
+        setBalance(subBill(paymentInfo) - 10.00);
+        System.out.println("paymentcreditcardbalance"+ getBalance());
+        return this;
+    }
+
+    @Override
+    public Double getBalance() {
+        return this.balance;
+    }
+
+    private void setBalance(Double balance){
+        this.balance= balance;
     }
 }

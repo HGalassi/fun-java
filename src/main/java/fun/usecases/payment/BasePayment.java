@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import static fun.usecases.payment.PaymentCalculation.isNotEnoughBalance;
+import static fun.usecases.payment.PaymentCalculation.subBill;
 
 @Component
 public class BasePayment {
@@ -21,12 +22,17 @@ public class BasePayment {
         this.makePayment = makePayment;
     }
     public void doPayment(PaymentInfo paymentInfo){
-        if(isNotEnoughBalance(paymentInfo))
-            makePayment = offersLoanIfInsufficientBalance(paymentInfo, makePayment); //instanceOf OffersLoan
-        makePayment = new SavePaymentInMemory(makePayment);
+
+        makePayment = offersLoanIfInsufficientBalance(paymentInfo, makePayment); //instanceOf OffersLoan
+
         System.out.println("Before executePayment" + paymentInfo + "Instance Of" + makePayment.getClass().getName());
-        makePayment.executePayment(paymentInfo);
-        System.out.println("After executePayment" + paymentInfo);
+
+        makePayment = new SavePaymentInMemory(makePayment);
+        if(isNotEnoughBalance(paymentInfo))
+            makePayment = makePayment.executePaymentWithLoan(subBill(paymentInfo),paymentInfo);
+        else
+            makePayment = makePayment.executePayment(paymentInfo);
+
         repository.sendRequest(paymentInfo);
     }
     private MakePayment offersLoanIfInsufficientBalance(PaymentInfo paymentInfo, MakePayment makePayment) {
