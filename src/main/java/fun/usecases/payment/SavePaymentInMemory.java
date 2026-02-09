@@ -36,6 +36,7 @@ public class SavePaymentInMemory implements MakePayment{
         makePayment.executePaymentWithLoan(loanValue,paymentInfo);
         System.out.println("end of stack balance" +  makePayment.getBalance());
         //TODO: Do things in memory for executed withLoan
+
         return this;
     }
 

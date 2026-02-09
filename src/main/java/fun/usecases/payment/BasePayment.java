@@ -3,6 +3,7 @@ package fun.usecases.payment;
 import fun.ports.out.dynamodb.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.Random;
 import java.util.UUID;
@@ -10,6 +11,7 @@ import java.util.UUID;
 import static fun.usecases.payment.PaymentCalculation.isNotEnoughBalance;
 import static fun.usecases.payment.PaymentCalculation.subBill;
 
+@RequestScope
 @Component
 public class BasePayment {
     private PaymentInfo paymentInfo;
@@ -22,7 +24,8 @@ public class BasePayment {
         this.makePayment = makePayment;
     }
     public void doPayment(PaymentInfo paymentInfo){
-
+        if(makePayment == null)
+            makePayment = new PaymentByCreditCard();
         makePayment = offersLoanIfInsufficientBalance(paymentInfo, makePayment); //instanceOf OffersLoan
 
         System.out.println("Before executePayment" + paymentInfo + "Instance Of" + makePayment.getClass().getName());
