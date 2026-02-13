@@ -18,13 +18,11 @@
 
     <!-- Versão do Java -->
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>25</maven.compiler.source>
+        <maven.compiler.target>25</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <aws.java.sdk.version>2.41.23</aws.java.sdk.version>  <!-- SDK version picked up from archetype version.-->
         <aws.java.sdk.version>2.22.0</aws.java.sdk.version> <!-- SDK version picked up from archetype version. -->
-        <slf4j.version>1.7.28</slf4j.version>
-        <junit5.version>5.8.1</junit5.version>
     </properties>
 
     <parent>
@@ -103,33 +101,13 @@
             </exclusions>
         </dependency>
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-
-        <!-- Needed to adapt Apache Commons Logging used by Apache HTTP Client to Slf4j to avoid
-        ClassNotFoundException: org.apache.commons.logging.impl.LogFactoryImpl during runtime -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-
         <!-- Test Dependencies -->
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${junit5.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>dynamodb-enhanced</artifactId>
@@ -141,10 +119,17 @@
     <build>
         <plugins>
             <!-- Compiler Plugin -->
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
+                <configuration>
+                    <release>25</release>
+                    <compilerArgs>
+                        <arg>--enable-preview</arg>
+                    </compilerArgs>
+                </configuration>
             </plugin>
         </plugins>
     </build>

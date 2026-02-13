@@ -54,4 +54,8 @@ public class BasePayment {
         Random random = new Random();
         return random.nextInt(0, 10) /2 == 0;
     }
+
+    public PaymentInfo getPayment(UUID paymentId){
+        return repository.getPaymentRegistry(paymentId);
+    }
 }

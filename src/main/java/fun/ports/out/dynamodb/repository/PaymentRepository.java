@@ -5,11 +5,12 @@ import fun.usecases.payment.PaymentInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.Key;
+import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
-import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
-import software.amazon.awssdk.services.dynamodb.model.ListTablesResponse;
-import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
-import software.amazon.awssdk.services.dynamodb.model.PutItemResponse;
+import software.amazon.awssdk.services.dynamodb.model.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,13 +52,19 @@ public class PaymentRepository {
         }catch (Exception e){
             System.out.println("oops, there's an unexpected error" +  e);
         }
-
-
     }
 
-//    public PaymentInfo getPaymentRegistry(UUID uuid){
-//        dynamoDbClient.getItem(uuid);
-//    }
+    public PaymentInfo getPaymentRegistry(UUID uuid){
+        DynamoDbEnhancedClient enhancedClient = DynamoDbEnhancedClient.builder()
+                .dynamoDbClient(dynamoDbClient)
+                .build();
+        DynamoDbTable<PaymentInfo> paymentInfoDynamoDbTable = enhancedClient.table("Payment", TableSchema.fromClass(PaymentInfo.class));
+        Key key = Key.builder()
+                .partitionValue(uuid.toString())
+                .build();
+
+        return paymentInfoDynamoDbTable.getItem(key);
+    }
 
 
 }

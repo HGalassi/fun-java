@@ -5,4 +5,4 @@ aws:
     access-key: local
     secret-key: local
 server:
-  port: 8082
+  port: 8083

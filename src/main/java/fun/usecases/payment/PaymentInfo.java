@@ -8,8 +8,9 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortK
 import java.util.UUID;
 @DynamoDbBean()
 public class PaymentInfo {
-    private final Double actualBalance;
-    private final Double paymentValue;
+
+    private Double actualBalance;
+    private Double paymentValue;
 
     private boolean loanTaken;
 
@@ -20,6 +21,7 @@ public class PaymentInfo {
 
     }
 
+    public PaymentInfo(){ }
     public Double getActualBalance() {
         return actualBalance;
     }
@@ -35,7 +37,7 @@ public class PaymentInfo {
     public boolean isLoanTaken() {
         return loanTaken;
     }
-    @DynamoDbSortKey
+//    @DynamoDbSortKey
     public void setLoanTaken(boolean loanTaken) {
         this.loanTaken = loanTaken;
     }
