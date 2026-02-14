@@ -1,9 +1,8 @@
 package fun.usecases.payment;
 
-import org.springframework.stereotype.Component;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbAttribute;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 
 import java.util.UUID;
 @DynamoDbBean()
@@ -14,14 +13,17 @@ public class PaymentInfo {
 
     private boolean loanTaken;
 
-    private final UUID transactionUuid = UUID.randomUUID();
+    private UUID id;
+
     public PaymentInfo(Double actualBalance, Double paymentValue){
         this.actualBalance = actualBalance;
         this.paymentValue = paymentValue;
-
+        this.id = UUID.randomUUID();
     }
 
-    public PaymentInfo(){ }
+    public PaymentInfo(){
+        this.id = UUID.randomUUID();
+    }
     public Double getActualBalance() {
         return actualBalance;
     }
@@ -30,9 +32,13 @@ public class PaymentInfo {
         return paymentValue;
     }
 
-//    public void setActualBalance(Double newBalance){
-//        this.actualBalance = newBalance;
-//    }
+    public void setActualBalance(Double actualBalance){
+        this.actualBalance = actualBalance;
+    }
+
+    public void setPaymentValue(Double paymentValue){
+        this.paymentValue = paymentValue;
+    }
 
     public boolean isLoanTaken() {
         return loanTaken;
@@ -42,9 +48,15 @@ public class PaymentInfo {
         this.loanTaken = loanTaken;
     }
 
-    @DynamoDbPartitionKey
-    public UUID getTransactionUuid() {
-        return transactionUuid;
+    @DynamoDbPartitionKey()
+    @DynamoDbAttribute("id")
+    public UUID getId() {
+        return id;
+    }
+
+    @DynamoDbAttribute("id")
+    public void setId(UUID id) {
+        this.id = id;
     }
     @Override
     public String toString() {
@@ -52,7 +64,7 @@ public class PaymentInfo {
                 "actualBalance=" + actualBalance +
                 ", paymentValue=" + paymentValue +
                 ", loanTaken=" + loanTaken +
-                ", transactionUuid=" + transactionUuid +
+                ", transactionUuid=" + id +
                 '}';
     }
 }

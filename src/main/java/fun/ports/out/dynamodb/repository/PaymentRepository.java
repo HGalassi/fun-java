@@ -15,7 +15,6 @@ import software.amazon.awssdk.services.dynamodb.model.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 @Repository
 public class PaymentRepository {
@@ -45,7 +44,7 @@ public class PaymentRepository {
         attrs.put("actualBalance", AttributeValue.builder().s(String.valueOf(paymentInfo.getActualBalance())).build());
         attrs.put("paymentValue", AttributeValue.builder().s(String.valueOf(paymentInfo.getPaymentValue())).build());
         attrs.put("isLoanToken", AttributeValue.builder().s(String.valueOf(paymentInfo.isLoanTaken())).build());
-        attrs.put("id", AttributeValue.builder().s(String.valueOf(paymentInfo.getTransactionUuid()  )).build());
+        attrs.put("id", AttributeValue.builder().s(String.valueOf(paymentInfo.getId()  )).build());
         PutItemRequest putItemRequest = PutItemRequest.builder().tableName("Payment").item(attrs).build();
         try{
             PutItemResponse response = dynamoDbClient.putItem(putItemRequest);
@@ -55,16 +54,22 @@ public class PaymentRepository {
     }
 
     public PaymentInfo getPaymentRegistry(UUID uuid){
+
         DynamoDbEnhancedClient enhancedClient = DynamoDbEnhancedClient.builder()
                 .dynamoDbClient(dynamoDbClient)
                 .build();
-        DynamoDbTable<PaymentInfo> paymentInfoDynamoDbTable = enhancedClient.table("Payment", TableSchema.fromClass(PaymentInfo.class));
+
+        DynamoDbTable<PaymentInfo> table =
+                enhancedClient.table("Payment", TableSchema.fromBean(PaymentInfo.class));
+
         Key key = Key.builder()
                 .partitionValue(uuid.toString())
                 .build();
 
-        return paymentInfoDynamoDbTable.getItem(key);
+        return table.getItem(key);
     }
+
+
 
 
 }

@@ -23,7 +23,7 @@ public class SavePaymentInMemory implements MakePayment{
         HashMap<UUID,Double> hashMap = new HashMap();
 
         hashMap.forEach((k,v)-> {
-            System.out.println("payment id: " + paymentInfo.getTransactionUuid() + "\n");
+            System.out.println("payment id: " + paymentInfo.getId() + "\n");
             System.out.println("actual balance: " + newBalance);
         } );
 
