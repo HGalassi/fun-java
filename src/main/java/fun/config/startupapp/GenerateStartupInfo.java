@@ -5,19 +5,16 @@ import fun.ports.out.dynamodb.repository.user.UserRepository;
 import fun.ports.out.dynamodb.repository.wallet.WalletRepository;
 import fun.usecases.WalletEnum;
 import fun.usecases.user.entity.UserEntity;
+import fun.usecases.wallet.Credit;
+import fun.usecases.wallet.Debit;
+import fun.usecases.wallet.Loan;
 import fun.usecases.wallet.entity.WalletEntity;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
-import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
 
 import java.time.Instant;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Random;
 import java.util.logging.Logger;
-
-import static fun.ports.out.dynamodb.repository.dynamodbAdapter.DynamoDBAdapter.*;
-import static java.util.UUID.randomUUID;
 
 @Configuration
 public class GenerateStartupInfo {
@@ -33,9 +30,6 @@ public class GenerateStartupInfo {
     public GenerateStartupInfo(UserEntity user, WalletEntity wallet,
                                UserRepository userRepository, WalletRepository walletRepository, DynamoFactory factory){
 
-        //TODO: Refactor: 1st user opens account with debit wallet. Then save user and wallet info in dynamodb.
-        //TODO: Then user can create more wallets, then, create otter wallets and then update user setting his wallets.
-
         this.userEntity = user;
         this.walletEntity = wallet;
         this.userRepository = userRepository;
@@ -43,7 +37,9 @@ public class GenerateStartupInfo {
         this.dynamoDbClient = factory.dynamoDbClient();
 
         createUser(user, userRepository);
-        createUserWallet(user, wallet, walletRepository);
+        createUserDebitWallet(user, wallet, walletRepository);
+        createUserCreditWallet(user, wallet, walletRepository);
+        createUserLoanWallet(user, wallet, walletRepository);
     }
 
     private static void createUser(UserEntity user, UserRepository userRepository) {
@@ -54,13 +50,31 @@ public class GenerateStartupInfo {
         logger.info("User created with id: " + user.getId());
     }
 
-    private static void createUserWallet(UserEntity user, WalletEntity wallet, WalletRepository walletRepository) {
-        wallet.setBalance(Random.from(new Random()).nextDouble(2_000_0));
-        wallet.setType(WalletEnum.DEBIT_CARD);
-        wallet.setUserId(user.getId());
-        wallet.setCreatedAt(Instant.now());
-        walletRepository.save(wallet);
-        logger.info("Wallet created with id: " + wallet.getId());
+    private static void createUserDebitWallet(UserEntity user, WalletEntity walletEntity, WalletRepository walletRepository) {
+        walletEntity.setType(WalletEnum.DEBIT_CARD);
+        walletEntity.setUserId(user.getId());
+        walletEntity.setCreatedAt(Instant.now());
+        walletEntity.setWallet(new Debit(new Random().nextDouble(-2_000_0, 2_000_0)));
+        walletRepository.save(walletEntity);
+        logger.info("Wallet created with id: " + walletEntity.getId());
+    }
+
+    private static void createUserCreditWallet(UserEntity user, WalletEntity walletEntity, WalletRepository walletRepository) {
+        walletEntity.setType(WalletEnum.CREDIT_CARD);
+        walletEntity.setUserId(user.getId());
+        walletEntity.setCreatedAt(Instant.now());
+        walletEntity.setWallet(new Credit(new Random().nextDouble(-2_000_0, 2_000_0)));
+        walletRepository.save(walletEntity);
+        logger.info("Wallet created with id: " + walletEntity.getId());
+    }
+
+    private static void createUserLoanWallet(UserEntity user, WalletEntity walletEntity, WalletRepository walletRepository) {
+        walletEntity.setType(WalletEnum.LOAN);
+        walletEntity.setUserId(user.getId());
+        walletEntity.setCreatedAt(Instant.now());
+        walletEntity.setWallet(new Loan(new Random().nextDouble(-2_000_0, 2_000_0)));
+        walletRepository.save(walletEntity);
+        logger.info("Wallet created with id: " + walletEntity.getId());
     }
 
 

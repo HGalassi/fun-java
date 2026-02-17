@@ -10,7 +10,7 @@ public class Credit implements Wallet {
 
     private Double balance;
 
-     public Credit(){
+     public Credit(double v){
      }
 
     public Double getBalance() {

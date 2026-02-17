@@ -4,13 +4,13 @@ import fun.usecases.WalletEnum;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 
-@Service
 @DynamoDbBean
 public class Debit implements Wallet{
 
     private Double balance;
 
-    public Debit() {
+    public Debit(Double balance) {
+        this.balance = balance;
     }
 
     public Double getBalance() {

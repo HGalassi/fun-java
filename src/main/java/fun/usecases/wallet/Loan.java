@@ -9,7 +9,7 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 public class Loan implements Wallet{
     private Double balance;
 
-    public Loan() {
+    public Loan(double v) {
     }
 
     public Double getBalance() {

@@ -28,7 +28,7 @@ public class BasePayment {
     }
     public void doPayment(PaymentInfo paymentInfo){
         // get wallets by client
-        Wallet wallet = new Debit();
+        Wallet wallet = new Debit(200.0);
 
         if(makePayment == null)
             makePayment = new PaymentByCreditCard();
