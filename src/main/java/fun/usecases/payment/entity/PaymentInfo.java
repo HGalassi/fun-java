@@ -8,12 +8,14 @@ import java.util.UUID;
 
 @DynamoDbBean()
 public class PaymentInfo {
-
+    //TODO: add user and other info needed for payment info
     private Double actualBalance;
     private Double paymentValue;
     private boolean loanTaken;
     private UUID id;
     private Date createdAt;
+    private String user;
+    private String walletId;
 
     public PaymentInfo(Double actualBalance, Double paymentValue){
         this.actualBalance = actualBalance;

@@ -25,21 +25,18 @@ public class GenerateStartupInfo {
     private WalletEntity walletEntity;
     private UserRepository userRepository;
     private WalletRepository walletRepository;
-    private DynamoDbClient dynamoDbClient;
 
     public GenerateStartupInfo(UserEntity user, WalletEntity wallet,
-                               UserRepository userRepository, WalletRepository walletRepository, DynamoFactory factory){
-
+                               UserRepository userRepository, WalletRepository walletRepository){
         this.userEntity = user;
         this.walletEntity = wallet;
         this.userRepository = userRepository;
         this.walletRepository = walletRepository;
-        this.dynamoDbClient = factory.dynamoDbClient();
 
-        createUser(user, userRepository);
-        createUserDebitWallet(user, wallet, walletRepository);
-        createUserCreditWallet(user, wallet, walletRepository);
-        createUserLoanWallet(user, wallet, walletRepository);
+        createUser(userEntity, this.userRepository);
+        createUserDebitWallet(userEntity, this.walletEntity, this.walletRepository);
+        createUserCreditWallet(userEntity, this.walletEntity, this.walletRepository);
+        createUserLoanWallet(userEntity, this.walletEntity, this.walletRepository);
     }
 
     private static void createUser(UserEntity user, UserRepository userRepository) {
