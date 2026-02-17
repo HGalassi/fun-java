@@ -1,0 +1,10 @@
+curl -X POST http://localhost:8084/payment   -H "Content-Type: application/json"   -d '{
+    "actualBalance": 1500.75,
+    "paymentValue": 250.00
+  }'
+
+curl -X GET http://localhost:8084/payment?paymentId=aea78bd2-a71c-46bf-9a2f-49e698a86550 -H "Content-Type: application/json"
+
+for /f "tokens=5" %a in ('netstat -ano ^| findstr :8080') do taskkill /F /PID %a
+
+& "C:\Program Files\Docker\Docker\Docker Desktop.exe"
