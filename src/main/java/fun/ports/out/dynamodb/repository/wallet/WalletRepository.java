@@ -1,5 +1,6 @@
 package fun.ports.out.dynamodb.repository.wallet;
 
+import fun.infrastructure.dynamodb.factory.DynamoFactory;
 import fun.ports.out.dynamodb.repository.CRUDOperations;
 import fun.usecases.user.entity.UserEntity;
 import fun.usecases.wallet.entity.WalletEntity;
@@ -15,6 +16,11 @@ import java.util.UUID;
 public class WalletRepository implements CRUDOperations<WalletEntity> {
 
     private DynamoDbClient dynamoDbClient;
+
+
+    public WalletRepository(DynamoFactory factory) {
+        this.dynamoDbClient = factory.dynamoDbClient();
+    }
 
     @Override
     public WalletEntity save(WalletEntity entity) {

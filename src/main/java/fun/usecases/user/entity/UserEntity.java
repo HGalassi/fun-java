@@ -4,14 +4,12 @@ import fun.ports.out.dynamodb.repository.dynamodbAdapter.InstantToStringConverte
 import fun.usecases.EntityType;
 import fun.usecases.SingleTableEntity;
 import org.springframework.stereotype.Component;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbAttribute;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbConvertedBy;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.*;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.UUID;
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 @DynamoDbBean()
@@ -20,7 +18,7 @@ public class UserEntity implements SingleTableEntity {
     private String id;
     private String name;
     private String email;
-    private ArrayList<String> walletIds;
+    private List walletIds;
     private Instant createdAt;
 
     public UserEntity() {
@@ -52,16 +50,17 @@ public class UserEntity implements SingleTableEntity {
         this.email = email;
     }
 
-    public ArrayList<String> getWalletIds() {
+    public List<String> getWalletIds() {
         return walletIds;
     }
 
-    public void setWalletIds(ArrayList<String> walletIds) {
-        this.walletIds = walletIds;
+    public void setWalletIds(List<String> walletIds) {
+        this.walletIds = walletIds == null ? null : new ArrayList<>(walletIds);
     }
 
     @DynamoDbConvertedBy(InstantToStringConverter.class)
-    public Instant  getCreatedAt() {
+    @DynamoDbSortKey
+    public Instant getCreatedAt() {
         return createdAt;
     }
 

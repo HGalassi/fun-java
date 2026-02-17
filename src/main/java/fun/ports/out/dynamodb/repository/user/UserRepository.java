@@ -2,14 +2,14 @@ package fun.ports.out.dynamodb.repository.user;
 
 import fun.infrastructure.dynamodb.factory.DynamoFactory;
 import fun.ports.out.dynamodb.repository.CRUDOperations;
-import fun.usecases.payment.entity.PaymentInfo;
 import fun.usecases.user.entity.UserEntity;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Repository;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+
+import java.util.ArrayList;
 import java.util.UUID;
 
 @Repository
@@ -30,7 +30,7 @@ private DynamoDbClient dynamoDbClient;
         DynamoDbTable<UserEntity> table =
                 enhancedClient.table("Payment", TableSchema.fromBean(UserEntity.class));
         entity.setId(entity.buildPk(UUID.randomUUID()));
-
+        entity.setWalletIds(null);
         table.putItem(entity);
         return entity;
     }

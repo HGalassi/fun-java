@@ -15,7 +15,7 @@ awslocal dynamodb create-table --cli-input-json '{
   ],
   "AttributeDefinitions": [
     { "AttributeName": "id", "AttributeType": "S" },
-    { "AttributeName": "createdAt", "AttributeType": "N" }
+    { "AttributeName": "createdAt", "AttributeType": "S" }
   ],
   "BillingMode": "PAY_PER_REQUEST"
 }'

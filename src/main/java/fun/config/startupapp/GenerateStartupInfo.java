@@ -22,7 +22,7 @@ import static java.util.UUID.randomUUID;
 @Configuration
 public class GenerateStartupInfo {
 
-    Logger logger = Logger.getLogger(GenerateStartupInfo.class.getName());
+    static Logger logger = Logger.getLogger(GenerateStartupInfo.class.getName());
 
     private UserEntity userEntity;
     private WalletEntity walletEntity;
@@ -43,16 +43,7 @@ public class GenerateStartupInfo {
         this.dynamoDbClient = factory.dynamoDbClient();
 
         createUser(user, userRepository);
-
         createUserWallet(user, wallet, walletRepository);
-    }
-
-    private static void createUserWallet(UserEntity user, WalletEntity wallet, WalletRepository walletRepository) {
-        wallet.setBalance(Random.from(new Random()).nextDouble(2_000_0));
-        wallet.setType(WalletEnum.DEBIT_CARD);
-        wallet.setUserId(user.getId());
-        wallet.setCreatedAt(new Date());
-        walletRepository.save(wallet);
     }
 
     private static void createUser(UserEntity user, UserRepository userRepository) {
@@ -60,5 +51,17 @@ public class GenerateStartupInfo {
         user.setName("John Doe");
         user.setCreatedAt(Instant.now());
         userRepository.save(user);
+        logger.info("User created with id: " + user.getId());
     }
+
+    private static void createUserWallet(UserEntity user, WalletEntity wallet, WalletRepository walletRepository) {
+        wallet.setBalance(Random.from(new Random()).nextDouble(2_000_0));
+        wallet.setType(WalletEnum.DEBIT_CARD);
+        wallet.setUserId(user.getId());
+        wallet.setCreatedAt(Instant.now());
+        walletRepository.save(wallet);
+        logger.info("Wallet created with id: " + wallet.getId());
+    }
+
+
 }

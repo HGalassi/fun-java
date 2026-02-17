@@ -1,14 +1,15 @@
 package fun.usecases.wallet.entity;
 
+import fun.ports.out.dynamodb.repository.dynamodbAdapter.InstantToStringConverter;
+import fun.ports.out.dynamodb.repository.dynamodbAdapter.WalletEnumToStringConverter;
 import fun.usecases.EntityType;
 import fun.usecases.SingleTableEntity;
 import fun.usecases.WalletEnum;
 import fun.usecases.wallet.Wallet;
 import org.springframework.stereotype.Component;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbAttribute;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
-import java.util.Date;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.*;
+
+import java.time.Instant;
 import java.util.UUID;
 
 @Component
@@ -19,7 +20,7 @@ public class WalletEntity implements SingleTableEntity {
     private Double balance;
     private WalletEnum type;
     private String userId;
-    private Date createdAt;
+    private Instant createdAt;
     private Wallet wallet;
 
     public WalletEntity() {
@@ -48,6 +49,7 @@ public class WalletEntity implements SingleTableEntity {
         return type;
     }
 
+    @DynamoDbConvertedBy(WalletEnumToStringConverter.class)
     public String getStringType() {
         return type.toString();
     }
@@ -64,14 +66,18 @@ public class WalletEntity implements SingleTableEntity {
         this.userId = userId;
     }
 
-    public Date getCreatedAt() {
+    @DynamoDbConvertedBy(InstantToStringConverter.class)
+    @DynamoDbSortKey
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 
+    //TODO: Ajustar parsing do wallet para o banco de dados, talvez seja necessário criar um converter específico para isso
+    @DynamoDbIgnore
     public Wallet getWallet() {
         return wallet;
     }
