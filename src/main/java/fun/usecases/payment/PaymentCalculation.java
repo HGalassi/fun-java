@@ -1,6 +1,8 @@
 package fun.usecases.payment;
 
 
+import fun.usecases.payment.entity.PaymentInfo;
+
 public class PaymentCalculation {
 
     public static final Double ZERO = 0.00;

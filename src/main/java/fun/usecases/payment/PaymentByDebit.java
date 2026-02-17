@@ -1,5 +1,7 @@
 package fun.usecases.payment;
 
+import fun.usecases.payment.entity.PaymentInfo;
+
 public class PaymentByDebit implements MakePayment{
 
     private PaymentInfo paymentInfo;

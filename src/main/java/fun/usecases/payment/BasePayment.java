@@ -1,6 +1,9 @@
 package fun.usecases.payment;
 
-import fun.ports.out.dynamodb.repository.PaymentRepository;
+import fun.ports.out.dynamodb.repository.payment.PaymentRepository;
+import fun.usecases.payment.entity.PaymentInfo;
+import fun.usecases.wallet.Debit;
+import fun.usecases.wallet.Wallet;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
@@ -24,6 +27,9 @@ public class BasePayment {
         this.makePayment = makePayment;
     }
     public void doPayment(PaymentInfo paymentInfo){
+        // get wallets by client
+        Wallet wallet = new Debit();
+
         if(makePayment == null)
             makePayment = new PaymentByCreditCard();
         makePayment = offersLoanIfInsufficientBalance(paymentInfo, makePayment); //instanceOf OffersLoan
@@ -36,7 +42,7 @@ public class BasePayment {
         else
             makePayment = makePayment.executePayment(paymentInfo);
 
-        repository.sendRequest(paymentInfo);
+        repository.sendRequest(paymentInfo, makePayment, wallet);
     }
     private MakePayment offersLoanIfInsufficientBalance(PaymentInfo paymentInfo, MakePayment makePayment) {
           System.out.println("Do you want to take out a loan to pay this bill? ");

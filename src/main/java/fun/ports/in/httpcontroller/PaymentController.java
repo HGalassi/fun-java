@@ -1,7 +1,7 @@
 package fun.ports.in.httpcontroller;
 
 import fun.usecases.payment.BasePayment;
-import fun.usecases.payment.PaymentInfo;
+import fun.usecases.payment.entity.PaymentInfo;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;

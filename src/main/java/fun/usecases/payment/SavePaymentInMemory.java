@@ -1,5 +1,6 @@
 package fun.usecases.payment;
 
+import fun.usecases.payment.entity.PaymentInfo;
 import org.springframework.stereotype.Service;
 
 import java.util.*;

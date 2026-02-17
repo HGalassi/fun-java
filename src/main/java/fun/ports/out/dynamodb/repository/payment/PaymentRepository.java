@@ -1,7 +1,9 @@
-package fun.ports.out.dynamodb.repository;
+package fun.ports.out.dynamodb.repository.payment;
 
 import fun.infrastructure.dynamodb.factory.DynamoFactory;
-import fun.usecases.payment.PaymentInfo;
+import fun.usecases.payment.MakePayment;
+import fun.usecases.payment.entity.PaymentInfo;
+import fun.usecases.wallet.Wallet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -16,6 +18,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static fun.ports.out.dynamodb.repository.dynamodbAdapter.DynamoDBAdapter.getPutItemRequest;
+import static fun.ports.out.dynamodb.repository.dynamodbAdapter.DynamoDBAdapter.returnAttributeValue;
+
 @Repository
 public class PaymentRepository {
 
@@ -24,7 +29,7 @@ public class PaymentRepository {
         this.dynamoDbClient = factory.dynamoDbClient();
     }
 
-    public void sendRequest(PaymentInfo paymentInfo) {
+    public void sendRequest(PaymentInfo paymentInfo, MakePayment makePayment, Wallet wallet) {
         Logger logger = LoggerFactory.getLogger(PaymentRepository.class);
 
         logger.info("calling the DynamoDB API to get a list of existing tables");
@@ -35,23 +40,26 @@ public class PaymentRepository {
         } else {
             response.tableNames().forEach(tableName -> logger.info("Table: " + tableName));
         }
-
-        addPaymentRegistry(paymentInfo);
+        addPaymentRegistry(paymentInfo, makePayment, wallet);
     }
 
-    public void addPaymentRegistry(PaymentInfo paymentInfo){
+    public PutItemResponse addPaymentRegistry(PaymentInfo paymentInfo, MakePayment makePayment, Wallet wallet ){
         Map<String, AttributeValue> attrs = new HashMap<>();
-        attrs.put("actualBalance", AttributeValue.builder().s(String.valueOf(paymentInfo.getActualBalance())).build());
-        attrs.put("paymentValue", AttributeValue.builder().s(String.valueOf(paymentInfo.getPaymentValue())).build());
-        attrs.put("isLoanToken", AttributeValue.builder().s(String.valueOf(paymentInfo.isLoanTaken())).build());
-        attrs.put("id", AttributeValue.builder().s(String.valueOf(paymentInfo.getId()  )).build());
-        PutItemRequest putItemRequest = PutItemRequest.builder().tableName("Payment").item(attrs).build();
+        attrs.put("actualBalance", returnAttributeValue(paymentInfo.getActualBalance()));
+        attrs.put("paymentValue", returnAttributeValue(paymentInfo.getPaymentValue()));
+        attrs.put("isLoanToken", returnAttributeValue(paymentInfo.isLoanTaken()));
+        attrs.put("id", returnAttributeValue(wallet.getDatabaseEntity(wallet)));
+        PutItemRequest putItemRequest = getPutItemRequest(attrs);
         try{
-            PutItemResponse response = dynamoDbClient.putItem(putItemRequest);
+            System.out.println(putItemRequest.item().get("id").s());
+            return dynamoDbClient.putItem(putItemRequest);
         }catch (Exception e){
-            System.out.println("oops, there's an unexpected error" +  e);
+            e.printStackTrace();
+            throw new RuntimeException("Error adding payment registry to DynamoDB", e);
         }
     }
+
+
 
     public PaymentInfo getPaymentRegistry(UUID uuid){
 
