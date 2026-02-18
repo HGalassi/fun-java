@@ -2,6 +2,7 @@ package fun.ports.out.dynamodb.repository.user;
 
 import fun.infrastructure.dynamodb.factory.DynamoFactory;
 import fun.ports.out.dynamodb.repository.CRUDOperations;
+import fun.usecases.WalletEnum;
 import fun.usecases.user.entity.UserEntity;
 import org.springframework.stereotype.Repository;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
@@ -38,5 +39,8 @@ private DynamoDbClient dynamoDbClient;
     @Override
     public UserEntity find(UserEntity entity) {
         return null;
+    }
+
+    public void findByUserAndWallet(UserEntity user, WalletEnum walletEnum) {
     }
 }

@@ -16,6 +16,7 @@ public class PaymentInfo {
     private Date createdAt;
     private String user;
     private String walletId;
+    private String paymentMethod;
 
     public PaymentInfo(Double actualBalance, Double paymentValue){
         this.actualBalance = actualBalance;
@@ -77,6 +78,31 @@ public class PaymentInfo {
         }
         this.id = id;
     }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getWalletId() {
+        return walletId;
+    }
+
+    public void setWalletId(String walletId) {
+        this.walletId = walletId;
+    }
+
+    public String getWalletEnum() {
+        return paymentMethod;
+    }
+
+    public void setWalletEnum(String walletEnum) {
+        this.paymentMethod = walletEnum;
+    }
+
     @Override
     public String toString() {
         return "PaymentInfo{" +

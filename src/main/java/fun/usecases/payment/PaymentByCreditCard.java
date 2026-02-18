@@ -1,6 +1,7 @@
 package fun.usecases.payment;
 
 import fun.usecases.payment.entity.PaymentInfo;
+import fun.usecases.wallet.Credit;
 import org.springframework.stereotype.Service;
 
 import static fun.usecases.payment.PaymentCalculation.subBill;
@@ -10,8 +11,13 @@ import static fun.usecases.payment.PaymentCalculation.sum;
 public class PaymentByCreditCard implements MakePayment{
 
     private Double balance;
+    private Credit credit;
 
     public PaymentByCreditCard(){
+    }
+
+    public PaymentByCreditCard(Credit credit){
+        this.credit=credit;
     }
     @Override
     public MakePayment executePayment(PaymentInfo paymentInfo) {

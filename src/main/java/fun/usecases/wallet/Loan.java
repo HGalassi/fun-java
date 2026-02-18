@@ -8,6 +8,11 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 @DynamoDbBean
 public class Loan implements Wallet{
     private Double balance;
+    private Loan loan;
+
+        public Loan(Loan loan) {
+            this.loan = loan;
+        }
 
     public Loan(double v) {
     }

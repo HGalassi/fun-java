@@ -52,7 +52,7 @@ public class UserEntity implements SingleTableEntity {
 
     public List<String> getWalletIds() {
         return walletIds;
-    }
+    } //TODO: replicar a wallet.
 
     public void setWalletIds(List<String> walletIds) {
         this.walletIds = walletIds == null ? null : new ArrayList<>(walletIds);

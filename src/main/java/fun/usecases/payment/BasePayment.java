@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -21,14 +22,22 @@ public class BasePayment {
 
     private final PaymentRepository repository;
 
-    private MakePayment makePayment;
-    public BasePayment(PaymentRepository repository, @Qualifier("paymentByCreditCard") MakePayment makePayment){
+    private List<MakePayment> makePayment;
+    public BasePayment(PaymentRepository repository, List<MakePayment> makePayment){
         this.repository = repository;
         this.makePayment = makePayment;
     }
     public void doPayment(PaymentInfo paymentInfo){
+        //TODO: Implementar switch case para o tipo de pagamento escolhido, e injetar o makePayment dinamicamente de acordo com o tipo escolhido
+        //TODO: Alterar o qualifier para ser dinamico de acordo com o tipo de pagamento escolhido
         // get wallets by client
         Wallet wallet = new Debit(200.0);
+
+        makePayment.forEach(f-> {
+            checkIfEnoughBalance(paymentInfo, f.ge);
+            f.executePayment(paymentInfo);
+
+        });
 
         if(makePayment == null)
             makePayment = new PaymentByCreditCard();
