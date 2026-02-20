@@ -10,7 +10,6 @@ import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 @Repository
@@ -31,7 +30,7 @@ private DynamoDbClient dynamoDbClient;
         DynamoDbTable<UserEntity> table =
                 enhancedClient.table("Payment", TableSchema.fromBean(UserEntity.class));
         entity.setId(entity.buildPk(UUID.randomUUID()));
-        entity.setWalletIds(null);
+        entity.setWallets(null);
         table.putItem(entity);
         return entity;
     }

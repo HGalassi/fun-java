@@ -5,8 +5,10 @@ import fun.usecases.WalletEnum;
 import fun.usecases.payment.entity.PaymentInfo;
 import fun.usecases.user.entity.UserEntity;
 import fun.usecases.wallet.Debit;
+import org.springframework.core.annotation.Order;
 
-public class PaymentByDebit implements MakePayment<PaymentByDebit>{
+@Order(1)
+public class PaymentByDebit implements ExecutePayment, WalletOperations<PaymentByDebit> {
 
     private PaymentInfo paymentInfo;
     private Debit debit;
@@ -21,13 +23,8 @@ public class PaymentByDebit implements MakePayment<PaymentByDebit>{
     }
 
     @Override
-    public MakePayment executePayment(PaymentInfo paymentInfo) {
-        return null;
-    }
-
-    @Override
-    public MakePayment executePaymentWithLoan(Double loanValue, PaymentInfo paymentInfo) {
-        return null;
+    public void executePayment(PaymentInfo paymentInfo) {
+        //TODO: Refatorar tudo isso
     }
 
     @Override

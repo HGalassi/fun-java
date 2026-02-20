@@ -1,7 +1,7 @@
 package fun.ports.out.dynamodb.repository.payment;
 
 import fun.infrastructure.dynamodb.factory.DynamoFactory;
-import fun.usecases.payment.MakePayment;
+import fun.usecases.payment.ExecutePayment;
 import fun.usecases.payment.entity.PaymentInfo;
 import fun.usecases.wallet.Wallet;
 import org.slf4j.Logger;
@@ -29,7 +29,7 @@ public class PaymentRepository {
         this.dynamoDbClient = factory.dynamoDbClient();
     }
 
-    public void sendRequest(PaymentInfo paymentInfo, MakePayment makePayment, Wallet wallet) {
+    public void sendRequest(PaymentInfo paymentInfo, ExecutePayment makePayment, Wallet wallet) {
         Logger logger = LoggerFactory.getLogger(PaymentRepository.class);
 
         logger.info("calling the DynamoDB API to get a list of existing tables");
@@ -43,7 +43,7 @@ public class PaymentRepository {
         addPaymentRegistry(paymentInfo, makePayment, wallet);
     }
 
-    public PutItemResponse addPaymentRegistry(PaymentInfo paymentInfo, MakePayment makePayment, Wallet wallet ){
+    public PutItemResponse addPaymentRegistry(PaymentInfo paymentInfo, ExecutePayment makePayment, Wallet wallet ){
         Map<String, AttributeValue> attrs = new HashMap<>();
         attrs.put("actualBalance", returnAttributeValue(paymentInfo.getActualBalance()));
         attrs.put("paymentValue", returnAttributeValue(paymentInfo.getPaymentValue()));
