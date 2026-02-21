@@ -3,34 +3,28 @@ package fun.usecases.user.entity;
 import fun.ports.out.dynamodb.repository.dynamodbAdapter.InstantToStringConverter;
 import fun.usecases.EntityType;
 import fun.usecases.SingleTableEntity;
-import fun.usecases.wallet.Wallet;
-import org.springframework.stereotype.Component;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.*;
 
 import java.time.Instant;
-import java.util.ArrayList;
 
-import java.util.List;
-
-@Component
 @DynamoDbBean()
 public class UserEntity implements SingleTableEntity {
 
     private String id;
     private String name;
     private String email;
-    private List<Wallet> wallets;
     private Instant createdAt;
+    private String walletId;
 
     public UserEntity() {
     }
 
     @DynamoDbPartitionKey()
-    @DynamoDbAttribute("id")
+    @DynamoDbAttribute("PK")
     public String getId() {
         return id;
     }
-    @DynamoDbAttribute("id")
+
     public void setId(String id) {
         this.id = id;
     }
@@ -51,14 +45,6 @@ public class UserEntity implements SingleTableEntity {
         this.email = email;
     }
 
-    @DynamoDbSortKey
-    public List<Wallet> getWallets() {
-        return wallets;
-    }
-    public void setWallets(List<Wallet> wallets) {
-        this.wallets = wallets == null ? null : new ArrayList<>(wallets);
-    }
-
     @DynamoDbConvertedBy(InstantToStringConverter.class)
     public Instant getCreatedAt() {
         return createdAt;
@@ -73,12 +59,22 @@ public class UserEntity implements SingleTableEntity {
         return EntityType.USER;
     }
 
+    @DynamoDbSortKey()
+    @DynamoDbAttribute("SK")
+    public String getWalletId() {
+        return walletId;
+    }
+
+    public void setWalletId(String walletId) {
+        this.walletId = walletId;
+    }
+
     public static class UserEntityBuilder {
         private String id;
         private String name;
         private String email;
-        private List<Wallet> wallets;
         private Instant createdAt;
+        private String walletId;
 
         public UserEntityBuilder withId(String id) {
             this.id = id;
@@ -95,13 +91,13 @@ public class UserEntity implements SingleTableEntity {
             return this;
         }
 
-        public UserEntityBuilder withWallets(List<Wallet> wallets) {
-            this.wallets = wallets;
+        public UserEntityBuilder withCreatedAt(Instant createdAt) {
+            this.createdAt = createdAt;
             return this;
         }
 
-        public UserEntityBuilder withCreatedAt(Instant createdAt) {
-            this.createdAt = createdAt;
+        public UserEntityBuilder withWalletIds(String walletId) {
+            this.walletId = walletId;
             return this;
         }
 
@@ -110,8 +106,8 @@ public class UserEntity implements SingleTableEntity {
             userEntity.setId(id);
             userEntity.setName(name);
             userEntity.setEmail(email);
-            userEntity.setWallets(wallets);
             userEntity.setCreatedAt(createdAt);
+            userEntity.setWalletId(walletId);
             return userEntity;
         }
     }

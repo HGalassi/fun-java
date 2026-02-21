@@ -31,4 +31,8 @@ public class BasePayment {
     public PaymentInfo getPayment(UUID paymentId){
         return paymentRepository.getPaymentRegistry(paymentId);
     }
+
+    public void deleteAllPayments(){
+        paymentRepository.deleteAll();
+    }
 }

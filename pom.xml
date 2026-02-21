@@ -33,6 +33,15 @@
 
     <dependencyManagement>
         <dependencies>
+
+            <!-- Source: https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-starter-model-openai -->
+            <dependency>
+                <groupId>org.springframework.ai</groupId>
+                <artifactId>spring-ai-starter-model-openai</artifactId>
+                <version>2.0.0-M2</version>
+                <scope>compile</scope>
+            </dependency>
+
             <dependency>
                 <groupId>software.amazon.awssdk</groupId>
                 <artifactId>bom</artifactId>
@@ -113,7 +122,29 @@
             <artifactId>dynamodb-enhanced</artifactId>
             <version>2.16.46</version>
         </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.ai</groupId>-->
+<!--            <artifactId>spring-ai-starter-model-openai</artifactId>-->
+<!--            <version>2.0.0-M2</version>-->
+<!--        </dependency>-->
+
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-starter-model-ollama</artifactId>
+            <version>2.0.0-M2</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots><enabled>false</enabled></snapshots>
+        </repository>
+    </repositories>
 
     <!-- Plugins de build -->
     <build>

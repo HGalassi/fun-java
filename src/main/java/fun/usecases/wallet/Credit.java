@@ -9,9 +9,22 @@ import org.springframework.stereotype.Service;
 public class Credit implements Wallet {
 
     private Double balance;
+    private String id;
+    //TODO: Isso vai para uma classe abstrata.
+    private String cardNumber;
+    private String cardHolderName;
+    private String expirationDate;
+    private String cvv;
 
-     public Credit(double v){
+     public Credit(Double balance,String id) {
+         this.balance = balance;
+         this.id = id;
      }
+
+    @Override
+    public String getId() {
+        return id;
+    }
 
     public Double getBalance() {
         return balance;
@@ -24,5 +37,10 @@ public class Credit implements Wallet {
     @Override
     public String getDatabaseEntity(Wallet payment) {
         return "#"+ WalletEnum.CREDIT_CARD.getPaymentType() + "#";
+    }
+
+    @Override
+    public WalletEnum getType() {
+        return WalletEnum.CREDIT_CARD;
     }
 }

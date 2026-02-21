@@ -27,12 +27,11 @@ public class WalletEntity implements SingleTableEntity {
     }
 
     @DynamoDbPartitionKey()
-    @DynamoDbAttribute("id")
+    @DynamoDbAttribute("PK")
     public String getId() {
         return id;
     }
 
-    @DynamoDbAttribute("id")
     public void setId(String id) {
         this.id = id;
     }
@@ -45,13 +44,11 @@ public class WalletEntity implements SingleTableEntity {
         this.balance = balance;
     }
 
+    @DynamoDbConvertedBy(WalletEnumToStringConverter.class)
+    @DynamoDbSortKey()
+    @DynamoDbAttribute("SK")
     public WalletEnum getType() {
         return type;
-    }
-
-    @DynamoDbConvertedBy(WalletEnumToStringConverter.class)
-    public String getStringType() {
-        return type.toString();
     }
 
     public void setType(WalletEnum type) {
@@ -67,7 +64,6 @@ public class WalletEntity implements SingleTableEntity {
     }
 
     @DynamoDbConvertedBy(InstantToStringConverter.class)
-    @DynamoDbSortKey
     public Instant getCreatedAt() {
         return createdAt;
     }

@@ -77,6 +77,25 @@ public class PaymentRepository {
         return table.getItem(key);
     }
 
+    public void deleteAll() {
+        ScanRequest scanRequest = ScanRequest.builder()
+                .tableName("Payment")
+                .build();
+
+        ScanResponse scanResponse = dynamoDbClient.scan(scanRequest);
+
+        for (Map<String, AttributeValue> item : scanResponse.items()) {
+            DeleteItemRequest deleteRequest = DeleteItemRequest.builder()
+                    .tableName("Payment")
+                    .key(Map.of(
+                            "PK", item.get("PK"),
+                            "SK", item.get("SK")
+                    ))
+                    .build();
+            dynamoDbClient.deleteItem(deleteRequest);
+        }
+    }
+
 
 
 

@@ -30,7 +30,6 @@ private DynamoDbClient dynamoDbClient;
         DynamoDbTable<UserEntity> table =
                 enhancedClient.table("Payment", TableSchema.fromBean(UserEntity.class));
         entity.setId(entity.buildPk(UUID.randomUUID()));
-        entity.setWallets(null);
         table.putItem(entity);
         return entity;
     }

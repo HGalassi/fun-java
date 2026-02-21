@@ -25,4 +25,10 @@ public class PaymentController {
     public PaymentInfo findPaymentInfo(@RequestParam("paymentId") String paymentId){
         return basePayment.getPayment(UUID.fromString(paymentId));
     }
+
+    @DeleteMapping()
+    public String deleteAllPayments(){
+        basePayment.deleteAllPayments();
+        return "All payment records deleted";
+    }
 }

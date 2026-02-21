@@ -10,12 +10,12 @@ awslocal dynamodb create-table --cli-input-json '{
 awslocal dynamodb create-table --cli-input-json '{
   "TableName": "Payment",
   "KeySchema": [
-    { "AttributeName": "id", "KeyType": "HASH" },
-    { "AttributeName": "createdAt", "KeyType": "RANGE" }
+    { "AttributeName": "PK", "KeyType": "HASH" },
+    { "AttributeName": "SK", "KeyType": "RANGE" }
   ],
   "AttributeDefinitions": [
-    { "AttributeName": "id", "AttributeType": "S" },
-    { "AttributeName": "createdAt", "AttributeType": "S" }
+    { "AttributeName": "PK", "AttributeType": "S" },
+    { "AttributeName": "SK", "AttributeType": "S" }
   ],
   "BillingMode": "PAY_PER_REQUEST"
 }'

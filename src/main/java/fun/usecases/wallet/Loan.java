@@ -8,13 +8,11 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 @DynamoDbBean
 public class Loan implements Wallet{
     private Double balance;
-    private Loan loan;
+    private final String id;
 
-        public Loan(Loan loan) {
-            this.loan = loan;
-        }
-
-    public Loan(double v) {
+    public Loan(Double balance, String id) {
+        this.balance = balance;
+        this.id = id;
     }
 
     public Double getBalance() {
@@ -26,7 +24,17 @@ public class Loan implements Wallet{
     }
 
     @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
     public String getDatabaseEntity(Wallet payment) {
         return "#"+ WalletEnum.LOAN.getPaymentType() + "#";
+    }
+
+    @Override
+    public WalletEnum getType() {
+        return WalletEnum.LOAN;
     }
 }
