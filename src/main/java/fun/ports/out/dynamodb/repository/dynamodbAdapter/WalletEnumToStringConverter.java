@@ -19,7 +19,7 @@ public class WalletEnumToStringConverter implements AttributeConverter<WalletEnu
 
     @Override
     public WalletEnum transformTo(AttributeValue attributeValue) {
-        return WalletEnum.valueOf(attributeValue.s());
+        return WalletEnum.fromPaymentType(attributeValue.s());
     }
 
     @Override

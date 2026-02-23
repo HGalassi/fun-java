@@ -15,7 +15,19 @@ awslocal dynamodb create-table --cli-input-json '{
   ],
   "AttributeDefinitions": [
     { "AttributeName": "PK", "AttributeType": "S" },
-    { "AttributeName": "SK", "AttributeType": "S" }
+    { "AttributeName": "SK", "AttributeType": "S" },
+    { "AttributeName": "userId", "AttributeType": "S" }
+  ],
+  "GlobalSecondaryIndexes": [
+    {
+      "IndexName": "userId-index",
+      "KeySchema": [
+        { "AttributeName": "userId", "KeyType": "HASH" }
+      ],
+      "Projection": {
+        "ProjectionType": "ALL"
+      }
+    }
   ],
   "BillingMode": "PAY_PER_REQUEST"
 }'

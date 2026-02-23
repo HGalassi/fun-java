@@ -19,4 +19,13 @@ public enum WalletEnum {
     public String getPaymentTypeForDatabase() {
         return paymentType;
     }
+
+    public static WalletEnum fromPaymentType(String value) {
+        for (WalletEnum w : values()) {
+            if (w.paymentType.equalsIgnoreCase(value)) {
+                return w;
+            }
+        }
+        throw new IllegalArgumentException("Unknown WalletEnum paymentType: " + value);
+    }
 }

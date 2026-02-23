@@ -1,4 +1,4 @@
-package fun.config.startupapp;
+ package fun.infrastructure.ai;
 
 import fun.usecases.user.entity.UserEntity;
 import org.springframework.ai.chat.client.ChatClient;

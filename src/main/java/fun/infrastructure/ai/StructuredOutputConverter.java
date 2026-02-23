@@ -1,4 +1,4 @@
-package fun.config.startupapp;
+package fun.infrastructure.ai;
 
 import com.fasterxml.jackson.databind.util.Converter;
 import org.springframework.ai.converter.FormatProvider;

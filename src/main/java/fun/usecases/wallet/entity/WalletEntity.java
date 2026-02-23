@@ -2,12 +2,15 @@ package fun.usecases.wallet.entity;
 
 import fun.ports.out.dynamodb.repository.dynamodbAdapter.InstantToStringConverter;
 import fun.ports.out.dynamodb.repository.dynamodbAdapter.WalletEnumToStringConverter;
+import fun.ports.out.dynamodb.repository.dynamodbAdapter.WalletToStringConverter;
 import fun.usecases.EntityType;
 import fun.usecases.SingleTableEntity;
 import fun.usecases.WalletEnum;
 import fun.usecases.wallet.Wallet;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.*;
+
+import java.util.List;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -55,6 +58,7 @@ public class WalletEntity implements SingleTableEntity {
         this.type = type;
     }
 
+    @DynamoDbSecondaryPartitionKey(indexNames = "userId-index")
     public String getUserId() {
         return userId;
     }
@@ -72,8 +76,7 @@ public class WalletEntity implements SingleTableEntity {
         this.createdAt = createdAt;
     }
 
-    //TODO: Ajustar parsing do wallet para o banco de dados, talvez seja necessário criar um converter específico para isso
-    @DynamoDbIgnore
+    @DynamoDbConvertedBy(WalletToStringConverter.class)
     public Wallet getWallet() {
         return wallet;
     }

@@ -14,7 +14,6 @@ public class UserEntity implements SingleTableEntity {
     private String name;
     private String email;
     private Instant createdAt;
-    private String walletId;
 
     public UserEntity() {
     }
@@ -29,6 +28,8 @@ public class UserEntity implements SingleTableEntity {
         this.id = id;
     }
 
+    @DynamoDbSortKey()
+    @DynamoDbAttribute("SK")
     public String getName() {
         return name;
     }
@@ -57,16 +58,6 @@ public class UserEntity implements SingleTableEntity {
     @Override
     public EntityType entityType() {
         return EntityType.USER;
-    }
-
-    @DynamoDbSortKey()
-    @DynamoDbAttribute("SK")
-    public String getWalletId() {
-        return walletId;
-    }
-
-    public void setWalletId(String walletId) {
-        this.walletId = walletId;
     }
 
     public static class UserEntityBuilder {
@@ -107,7 +98,6 @@ public class UserEntity implements SingleTableEntity {
             userEntity.setName(name);
             userEntity.setEmail(email);
             userEntity.setCreatedAt(createdAt);
-            userEntity.setWalletId(walletId);
             return userEntity;
         }
     }
